@@ -1,5 +1,5 @@
 
-import { Button } from "./ui/button"
+// import { Button } from "./ui/button"
 import  Crime  from '../assets/crime.jpg'
 import Life from '../assets/life.jpg'
 import Pride from '../assets/pride.jpeg'

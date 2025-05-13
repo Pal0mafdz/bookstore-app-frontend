@@ -1,5 +1,5 @@
 // import { useCreateMyUser } from '@/api/MyUserApi';
-import {Auth0Provider , AppState, User } from '@auth0/auth0-react'
+import {Auth0Provider , AppState } from '@auth0/auth0-react'
 import { useNavigate } from 'react-router-dom';
 
 type Props = {
@@ -22,14 +22,18 @@ const Auth0ProviderWithNavigate = ({children}: Props)=>{
     }
 
     //appstate grabs the url we had before
-    const onRedirectCallback = (appState?: AppState, user?: User) =>{
-        // console.log("user", user);
-        // if(user?.sub && user?.email){
-        //     createUser({auth0Id: user.sub, email: user.email});
-        // }
-        navigate("/auth-callback");
+    // const onRedirectCallback = (appState?: AppState, user?: User) =>{
+    //     // console.log("user", user);
+    //     // if(user?.sub && user?.email){
+    //     //     createUser({auth0Id: user.sub, email: user.email});
+    //     // }
+    //     navigate("/auth-callback");
 
-    }
+    // }
+
+    const onRedirectCallback = (appState?: AppState) => {
+        navigate(appState?.returnTo || "/auth-callback");
+      }
 
     //auth provider
     return(

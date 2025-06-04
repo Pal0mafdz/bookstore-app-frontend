@@ -5,6 +5,8 @@ import HomePage from "./pages/HomePage";
 import AuthCallBackPage from "./pages/AuthCallBackPage";
 import UserProfilePage from "./pages/UserProfilePage";
 import ProtectedRoute from "./auth/ProtectedRoute";
+//import ManageBookForm from "./forms/manage-book-form/ManageBookForm";
+import ManageBookPage from "./pages/ManageBookPage";
 
 
 const AppRoutes = () =>{
@@ -17,6 +19,10 @@ const AppRoutes = () =>{
                 <Route path = "/user-profile" element={<Layout><UserProfilePage/></Layout>}/>
             </Route>
             
+            <Route element={<ProtectedRoute/>}>
+                <Route path = "/manage-book" element={<Layout><ManageBookPage/></Layout>}/>
+            </Route>
+
             <Route path="*" element={<Navigate to="/"/>}/>
 
         </Routes>

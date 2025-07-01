@@ -1,11 +1,22 @@
 import BestSeller from "@/components/BestSeller";
+import SearchBar, { SearchForm } from "@/components/SearchBar";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () =>{
+
+    const navigate = useNavigate();
+    const handleSearchSubmit = (searchFormValues: SearchForm)=>{
+        navigate({
+            pathname: `/search/${searchFormValues.searchQuery}`,
+        })
+    }
     return(
         <div className="flex flex-col gap-12">
-            <div className=" rounded-lg py-8 flex flex-col gap-16 text-center -mt-70">
+            <div className="md:px-32 rounded-lg py-8 flex flex-col gap-8 text-center -mt-80">
             <h1 className="text-5xl font-libre tracking-tight text-white">Where every page is a new journey</h1>
+            <SearchBar placeHolder="Search by City or Town" onSubmit={handleSearchSubmit}/>
             <span className="text-xl font-libre italic text-white ">Choose your destination</span>
+            
             </div>
 
             <div className="grid md:grid-cols-[1fr_2fr] gap-5 mt-20">

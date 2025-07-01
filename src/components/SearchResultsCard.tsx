@@ -1,5 +1,4 @@
 import { Book } from "@/types";
-import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import { Banknote, Clock, Dot } from "lucide-react";
 import { Link } from "react-router-dom";
 

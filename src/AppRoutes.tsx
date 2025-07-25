@@ -24,6 +24,10 @@ const AppRoutes = () =>{
             </Route>
             
             <Route element={<ProtectedRoute/>}>
+                <Route path = "/manage-book/:id" element={<Layout><ManageBookPage/></Layout>}/>
+            </Route>
+
+            <Route element={<ProtectedRoute/>}>
                 <Route path = "/manage-book" element={<Layout><ManageBookPage/></Layout>}/>
             </Route>
 

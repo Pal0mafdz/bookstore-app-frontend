@@ -150,6 +150,7 @@ const ManageBookForm = ({onSave, isLoading, book}: Props)=>{
                 <Separator/>
                 <ImageSection/>
                 {isLoading ? <LoadingButton/> : <Button type="submit">Submit</Button>}
+  
             </form>
 
         </Form>

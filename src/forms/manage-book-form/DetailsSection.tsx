@@ -14,7 +14,7 @@ const DetailsSection = () => {
                 Enter the details of your book
             </FormDescription>
         </div>
-        <FormField control={control} name="bookName" render={({field})=>(
+        <FormField control={control} name="name" render={({field})=>(
         <FormItem>
             <FormItem>Name</FormItem>
             <FormControl>

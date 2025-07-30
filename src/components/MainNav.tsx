@@ -15,7 +15,7 @@ const MainNav = () =>{
            </Button>)
            
             }
-             <ShoppingBag className='hover:text-cyan-800'/>
+          <ShoppingBag/>
         </span>
         // <Button variant = "ghost" className='font-libre bold bg-black text-white'>
         //     Log In

@@ -9,6 +9,7 @@ import ProtectedRoute from "./auth/ProtectedRoute";
 import ManageBookPage from "./pages/ManageBookPage";
 import SearchPage from "./pages/SearchPage";
 import BookDashboardPage from "./pages/BookDashboardPage";
+import DetailPage from "./pages/DetailPage";
 
 
 const AppRoutes = () =>{
@@ -16,6 +17,8 @@ const AppRoutes = () =>{
         <Routes>
             <Route path = "/auth-callback" element={<AuthCallBackPage/>}/>
             <Route path = "/search/:city" element={<Layout showHero={false}><SearchPage/></Layout>}/>
+           
+            <Route path = "/detail/:bookId" element={<Layout showHero={false}><DetailPage/></Layout>}/>
            
             <Route path = "/" element={<Layout showHero><HomePage/></Layout>}/>
 

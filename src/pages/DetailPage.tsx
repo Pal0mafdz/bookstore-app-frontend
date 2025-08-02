@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { useState } from "react";
 import { useParams } from "react-router-dom"
 import OrderSummary from "@/components/OrderSummary";
-import { Book } from "@/types";
+
 
 
 export type CartItem = {

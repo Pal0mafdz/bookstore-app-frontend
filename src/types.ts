@@ -27,6 +27,17 @@ export type Book = {
 
 }
 
+export type CartItem = {
+    book: Book;
+    quantity: number;
+}
+
+export type Cart = {
+    user: string,
+    items: CartItem[];
+}
+
+
 export type BookSearchResponse = {
     data: Book[];
     pagination: {

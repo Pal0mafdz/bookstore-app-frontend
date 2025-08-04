@@ -1,11 +1,9 @@
 import { useGetBook } from "@/api/BookApi";
 import BookInfo from "@/components/BookInfo";
 import { Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
-import { useState } from "react";
 import { useParams } from "react-router-dom"
 import { useAddMyCart } from "@/api/MyCartApi";
 import { Button } from "@/components/ui/button";
-import { CartItem } from "@/types";
 import { Separator } from "@/components/ui/separator";
 
 
@@ -13,7 +11,7 @@ const DetailPage = () => {
     const { bookId } = useParams();
     const { book, isLoading } = useGetBook(bookId);
     const { addToCart, isLoading: isAdding} = useAddMyCart();
-    const [ cartItems, setCartItems ] = useState<CartItem[]>([]);
+
 
     const getTotalCost = () =>{
         if(!book){
@@ -30,22 +28,6 @@ const DetailPage = () => {
         }
         addToCart({bookId: book._id, quantity: 1});
 
-        setCartItems((prevCartItem)=>{
-            //checks if the book is already in the cart
-            const existingCartItem = prevCartItem.find((item)=> item.book._id === book._id)
-            if(existingCartItem){
-                return prevCartItem.map((item)=> item.book._id === book._id ? 
-                {...item, quantity: item.quantity + 1}: item)
-            }else{
-                return [
-                    ...prevCartItem, {
-                        book,
-                        quantity: 1
-
-                    }
-                ]
-            }
-        })
     }
 
     //if theres no book

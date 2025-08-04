@@ -1,59 +1,50 @@
-import { CartItem } from "@/pages/DetailPage";
-import { Book } from "@/types";
-import { CardContent, CardHeader, CardTitle } from "./ui/card";
-import { Badge } from "./ui/badge";
+import { CartItem } from "@/types";
+
 import { Separator } from "./ui/separator";
 
 type Props = {
-    book: Book;
-    cartItems: CartItem[];
+    items: CartItem[];
+    
 }
 
-const OrderSummary = ({book, cartItems}: Props) =>{
+const OrderSummary = ({items}: Props) =>{
     
-    const getTotalCost = () =>{
-       const totalInPence = cartItems.reduce((total, cartItem)=> total + cartItem.price * cartItem.quantity,0)
+    const getTotal= () =>{
 
-       const totalWithShipping = totalInPence + book.shippingCost;
+        const total = items.reduce((sum, item)=> sum + (item.book.price + item.book.shippingCost) * item.quantity,0)
 
-       return (totalWithShipping/100).toFixed(2);
+        
+
+       return (total/100).toFixed(2);
     }
 
     
     return(
-        <>
-        <CardHeader>
-            <CardTitle className="text-2xl font-libre bold tracking-tight flex justify-between">
-                <span>Your Order</span>
-                <span>${getTotalCost()}</span>
-
-            </CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-5">
-            {cartItems.map((item)=>(
-                <div className="flex justify-between">
-                    <span>
-                        <Badge variant="outline" className="mr-2">
-                            {item.quantity}
-                        </Badge>
-                        {item.name}
-                    </span>
-                    <span className="flex items-center gap-1">
-                        ${((item.price * item.quantity)/100).toFixed(2)}
-                    </span>
+        <div className="flex flex-col gap-3">
+            {items.map((item)=>(
+                <div key={item.book._id} className="flex justify-between text-sm">
+                    <div>
+                        <p className="font-semibold">{item.book.name}</p>
+                        <p className="text-muted-foreground text-xs">
+                        Quantity: {item.quantity}
+                        </p>
+                    </div>
+                    <div className="text-right">
+                    <p>${((item.book.price * item.quantity) / 100).toFixed(2)}</p>
+                    <p className="text-xs text-muted-foreground">
+                    + Shipping ${(item.book.shippingCost / 100).toFixed(2)}
+                    </p>
+                </div>
                 </div>
             ))}
             <Separator/>
-            <div className="flex justify-between">
-                <span>Delivery</span>
-                <span>${(book.shippingCost/100).toFixed(2)}</span>
+            <div className="flex justify-between font-bold">
+            <span>Total:</span>
+            <span>${getTotal()}</span>
             </div>
-            <Separator/>
-
-        </CardContent>
-
+        </div>
         
-        </>
+     
     )
 }
 

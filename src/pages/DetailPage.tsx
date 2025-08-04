@@ -1,53 +1,52 @@
 import { useGetBook } from "@/api/BookApi";
 import BookInfo from "@/components/BookInfo";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import { useState } from "react";
 import { useParams } from "react-router-dom"
-import OrderSummary from "@/components/OrderSummary";
+import { useAddMyCart } from "@/api/MyCartApi";
+import { Button } from "@/components/ui/button";
+import { CartItem } from "@/types";
+import { Separator } from "@/components/ui/separator";
 
-
-
-export type CartItem = {
-    _id: string;
-    name: string;
-    price: number;
-    quantity: number;
-}
 
 const DetailPage = () => {
     const { bookId } = useParams();
     const { book, isLoading } = useGetBook(bookId);
-
+    const { addToCart, isLoading: isAdding} = useAddMyCart();
     const [ cartItems, setCartItems ] = useState<CartItem[]>([]);
 
-    //probably wont use ->
-    // const addToCart = (book: Book)=>{
-    //     setCartItems((prevCartItems)=>{
-    //         //check if the book is already in the cart
-    //         //if the item is in the cart,update the quantity
-    //         const existingCartItem = prevCartItems.find((cartItem)=> cartItem._id === book._id)
+    const getTotalCost = () =>{
+        if(!book){
+            return "0.00";
+        }
+        const totalWithShipping = book.price + book.shippingCost;
+ 
+        return (totalWithShipping/100).toFixed(2);
+     }
 
-    //         let updateCartItems;
+    const handleAddToCart = () =>{
+        if (!book){
+            return;
+        }
+        addToCart({bookId: book._id, quantity: 1});
 
-    //         if(existingCartItem){
-    //             updateCartItems = prevCartItems.map((cartItem)=> cartItem._id === book._id
-    //             ? {...cartItem, quantity: cartItem.quantity + 1}: cartItem)
-    //         }else{
-    //             updateCartItems = [
-    //                 ...prevCartItems, {
-    //                     _id: book._id,
-    //                     name: book.name,
-    //                     price: book.price,
-    //                     quantity: 1,
-    //                 }
-    //             ]
-    //         }
+        setCartItems((prevCartItem)=>{
+            //checks if the book is already in the cart
+            const existingCartItem = prevCartItem.find((item)=> item.book._id === book._id)
+            if(existingCartItem){
+                return prevCartItem.map((item)=> item.book._id === book._id ? 
+                {...item, quantity: item.quantity + 1}: item)
+            }else{
+                return [
+                    ...prevCartItem, {
+                        book,
+                        quantity: 1
 
-    //         return updateCartItems;
-
-    //     })
-
-    // }
+                    }
+                ]
+            }
+        })
+    }
 
     //if theres no book
     if(isLoading || !book){
@@ -56,10 +55,6 @@ const DetailPage = () => {
 
   return (
     <div className="flex flex-col gap-10">
-        {/* <AspectRatio ratio={3/5}>
-            <img src={book.imageUrl} className="rounded-md object-cover h-full w-full"/>
-        </AspectRatio> */}
-        
         
         <div className="grid md:grid-cols-[3fr_5fr_2fr] gap-5 md:px-32">
             <div className="rounded-md object-cover w-full h-150 shadow-lg" >
@@ -67,12 +62,28 @@ const DetailPage = () => {
             </div>
             <div className="flex flex-col gap-4">
                 <BookInfo book={book}/>
+
             </div>
             <div>
                 <Card>
-                    <OrderSummary book={book} cartItems={cartItems}/>
+                    <CardHeader>
+                    <CardTitle className="text-2xl font-libre bold tracking-tight flex justify-between">
+                        <span>Your Order</span>
+                        <span>${getTotalCost()}</span>
+
+                    </CardTitle>
+                    <Separator/>
+                    </CardHeader>
+                    <CardContent className="flex flex-col gap-5">
+                    <div className="flex justify-between">
+                        <span>Delivery</span>
+                        <span>${book.shippingCost}</span>
+                    </div>  
+                    <Button onClick={handleAddToCart} disabled={isAdding}>
+                        {isAdding ? "Adding...": "Add to Cart"}
+                    </Button>
                     
-                    
+                    </CardContent>
                 </Card>
             </div>
 

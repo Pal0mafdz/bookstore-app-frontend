@@ -17,6 +17,8 @@ export const useAddMyCart = ()=>{
             method: "POST",
             headers:{
                 Authorization: `Bearer ${accessToken}`,
+                "Content-Type": "application/json",
+                
 
             },
             body: JSON.stringify({bookId, quantity}),

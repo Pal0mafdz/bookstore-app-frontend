@@ -1,7 +1,8 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import {Button } from './ui/button'
 import UsernameMenu from '@/components/UsernameMenu'
-import { ShoppingBag } from 'lucide-react';
+
+import Bag from './Bag';
 
 const MainNav = () =>{
     const {loginWithRedirect, isAuthenticated} = useAuth0();
@@ -15,11 +16,9 @@ const MainNav = () =>{
            </Button>)
            
             }
-          <ShoppingBag/>
+          <Bag/>
         </span>
-        // <Button variant = "ghost" className='font-libre bold bg-black text-white'>
-        //     Log In
-        // </Button>
+        
 
         
         

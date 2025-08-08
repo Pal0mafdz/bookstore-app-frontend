@@ -8,6 +8,7 @@ import { useGetMyCart } from "@/api/MyCartApi"
 const Bag = () => {
     
     const { cart, isLoading } = useGetMyCart();
+   
 
   return (
     <Sheet>

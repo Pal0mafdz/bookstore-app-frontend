@@ -5,8 +5,18 @@ import { Button } from "./ui/button"
 import OrderSummary from "./OrderSummary"
 import { useGetMyCart } from "@/api/MyCartApi"
 
+import { UserFormData } from "@/forms/user-profile-form/UserProfileForm"
+import { useState } from "react"
+import ConfirmDialog from "./confirmDialog"
+
 const Bag = () => {
-    
+    const [dialogOpen, setDialogOpen] = useState(false);
+
+    const onCheckout = (userFormData: UserFormData)=>{
+        console.log("userFormData", userFormData);
+
+    }
+
     const { cart, isLoading } = useGetMyCart();
    
 
@@ -33,7 +43,8 @@ const Bag = () => {
             <>
             <OrderSummary items={cart.items}/>
             <SheetDescription className="flex">
-                <Button className="flex-1 font-libre bold bg-sky-900">Buy Now</Button>
+                <Button onClick={()=> setDialogOpen(true)}  className="flex-1 font-libre bold bg-sky-900">Buy Now</Button>
+                <ConfirmDialog open={dialogOpen} onOpenChange={setDialogOpen} onCheckout={onCheckout}/>
             </SheetDescription>
             
 

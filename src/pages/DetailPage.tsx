@@ -1,16 +1,20 @@
 import { useGetBook } from "@/api/BookApi";
 import BookInfo from "@/components/BookInfo";
 import { Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
-import { useParams } from "react-router-dom"
+import { useLocation, useParams } from "react-router-dom"
 import { useAddMyCart } from "@/api/MyCartApi";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { useAuth0 } from "@auth0/auth0-react";
+import { toast } from "sonner";
 
 
 const DetailPage = () => {
+    const { isAuthenticated, loginWithRedirect, isLoading: isAuthLoading} = useAuth0();
     const { bookId } = useParams();
     const { book, isLoading } = useGetBook(bookId);
     const { addToCart, isLoading: isAdding} = useAddMyCart();
+    const {pathname} = useLocation();
 
 
     const getTotalCost = () =>{
@@ -23,6 +27,25 @@ const DetailPage = () => {
      }
 
     const handleAddToCart = () =>{
+        //returns to the page you currently are
+        const onLogin = async () =>{
+            await loginWithRedirect({
+                appState:{
+                    returnTo: pathname,
+                }
+            })
+        }
+
+        if(!isAuthenticated){
+            toast("Log in to continue!", {
+                description: "Click here to log in",
+                action: {
+                    label: "Log in",
+                    onClick:() => onLogin(),
+                }
+            });
+        }
+
         if (!book){
             return;
         }

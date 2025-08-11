@@ -35,10 +35,10 @@ export const useAddMyCart = ()=>{
         onSuccess: () =>{
             toast.success("Item added to cart");
             queryClient.invalidateQueries("fetchMyCart");
-        },
-        onError: () =>{
-            toast.error("Unable to add item into the cart");
         }
+        // onError: () =>{
+        //     toast.error("Unable to add item into the cart");
+        // }
     
        });
     

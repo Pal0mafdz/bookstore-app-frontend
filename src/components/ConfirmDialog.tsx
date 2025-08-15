@@ -2,21 +2,22 @@
 import { Dialog, DialogContent} from "./ui/dialog"
 import UserProfileForm, { UserFormData } from "@/forms/user-profile-form/UserProfileForm"
 import { useGetMyUser } from "@/api/MyUserApi"
-import LoadingButton from "./LoadingButton"
+
 
 
 type Props = {
     open: boolean;
     onCheckout: (userFormData: UserFormData) => void;
     onOpenChange: (open: boolean) =>void;
+    isLoading: boolean;
     // disabled: boolean;
 }
 
-const ConfirmDialog=({ open, onOpenChange, onCheckout,}: Props)=>{
+const ConfirmDialog=({ open, onOpenChange, onCheckout, isLoading}: Props)=>{
     // const [open, setOpen] = useState(false);
     const { currentUser, isLoading: isGetUserLoading} = useGetMyUser();
 
-    if(!currentUser){
+    if(!currentUser || isLoading){
         return;
     }
   return (

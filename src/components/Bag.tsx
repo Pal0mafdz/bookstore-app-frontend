@@ -7,13 +7,43 @@ import { useGetMyCart } from "@/api/MyCartApi"
 
 import { UserFormData } from "@/forms/user-profile-form/UserProfileForm"
 import { useState } from "react"
-import ConfirmDialog from "./confirmDialog"
+import ConfirmDialog from "./ConfirmDialog"
+import { useCreateCheckoutSession } from "@/api/OrderApi"
+import { toast } from "sonner"
+
+
 
 const Bag = () => {
     const [dialogOpen, setDialogOpen] = useState(false);
+    const { createCheckoutSession, isLoading: isCheckoutLoading} = useCreateCheckoutSession();
 
-    const onCheckout = (userFormData: UserFormData)=>{
+    const onCheckout = async(userFormData: UserFormData)=>{
         console.log("userFormData", userFormData);
+
+        
+
+
+        const checkoutData = {
+            cartItems: cart? cart.items.map(item=>({
+                bookId: item.book._id,
+                name: item.book.name,
+                quantity: item.quantity,
+            })) : [],
+            deliveryDetails:{
+                name: userFormData.name,
+                addressLine1: userFormData.addressLine1,
+                city: userFormData.city,
+                country: userFormData.country,
+                email: userFormData.email as string ,
+
+            }
+        };
+
+        
+
+        const data = await createCheckoutSession(checkoutData);
+
+        window.location.href = data.url;
 
     }
 
@@ -44,7 +74,9 @@ const Bag = () => {
             <OrderSummary items={cart.items}/>
             <SheetDescription className="flex">
                 <Button onClick={()=> setDialogOpen(true)}  className="flex-1 font-libre bold bg-sky-900">Buy Now</Button>
-                <ConfirmDialog open={dialogOpen} onOpenChange={setDialogOpen} onCheckout={onCheckout}/>
+                <ConfirmDialog open={dialogOpen} onOpenChange={setDialogOpen} 
+                onCheckout={onCheckout}
+                isLoading={isCheckoutLoading}/>
             </SheetDescription>
             
 

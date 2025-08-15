@@ -29,6 +29,7 @@ export type Book = {
 
 export type CartItem = {
     book: Book;
+    
     quantity: number;
 }
 

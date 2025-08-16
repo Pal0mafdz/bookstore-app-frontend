@@ -10,7 +10,7 @@ import { toast } from "sonner";
 
 
 const DetailPage = () => {
-    const { isAuthenticated, loginWithRedirect, isLoading: isAuthLoading} = useAuth0();
+    const { isAuthenticated, loginWithRedirect} = useAuth0();
     const { bookId } = useParams();
     const { book, isLoading } = useGetBook(bookId);
     const { addToCart, isLoading: isAdding} = useAddMyCart();

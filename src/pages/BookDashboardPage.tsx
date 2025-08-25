@@ -1,5 +1,8 @@
-import { useDeleteMyBook, useGetMyBooks } from "@/api/MyBookApi"
+import { useDeleteMyBook, useGetMyBookOrders, useGetMyBooks } from "@/api/MyBookApi"
+import OrderItemCard from "@/components/OrderItemCard";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 
 import { useNavigate} from "react-router-dom";
 
@@ -9,6 +12,7 @@ const BookDashboardPage = () => {
  // const { id: bookId } = useParams();
   const navigate = useNavigate();
   const { deleteBook } = useDeleteMyBook();
+  const {orders} = useGetMyBookOrders();
   
   // const delete = useDeleteMyBook();
 
@@ -17,18 +21,26 @@ const BookDashboardPage = () => {
 
 
   return (
-    
-
-    <div className="grid gap-4">
-      <div className="flex justify-right">
+    <Tabs defaultValue= "dashboard">
+      <TabsList>
+        <TabsTrigger value="orders">Orders</TabsTrigger>
+        <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+      </TabsList>
+      <TabsContent value="orders" className="space-y-5 bg-gray-50 p-10 rounded-lg">
+        <h2 className="text-2xl font-libre bold">{orders?.length} active orders</h2>
+        {orders?.map((order)=> (
+          <OrderItemCard key={order._id} order={order}/>
+        ))}
+      </TabsContent>
+      <TabsContent value="dashboard">
+      <div className="grid gap-4 p-10">
+      <div className="flex justify-left">
         <Button
             className="bg-black text-white"
             onClick={() => navigate("/manage-book")}
           >
             + Add New Book
           </Button>
-
-         
       </div>
       
       
@@ -52,9 +64,13 @@ const BookDashboardPage = () => {
 
         </div>
       ))}
-      
-
     </div>
+
+      </TabsContent>
+    </Tabs>
+    
+
+   
   )
 }
 

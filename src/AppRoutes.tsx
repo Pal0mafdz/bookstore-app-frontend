@@ -10,6 +10,7 @@ import ManageBookPage from "./pages/ManageBookPage";
 import SearchPage from "./pages/SearchPage";
 import BookDashboardPage from "./pages/BookDashboardPage";
 import DetailPage from "./pages/DetailPage";
+import OrderStatusPage from "./pages/OrderStatusPage";
 
 
 const AppRoutes = () =>{
@@ -36,6 +37,10 @@ const AppRoutes = () =>{
 
             <Route element={<ProtectedRoute/>}>
                 <Route path = "/book-dashboard" element={<Layout><BookDashboardPage/></Layout>}/>
+            </Route>
+
+            <Route element={<ProtectedRoute/>}>
+                <Route path = "/order-status" element={<Layout><OrderStatusPage/></Layout>}/>
             </Route>
 
             <Route path="*" element={<Navigate to="/"/>}/>

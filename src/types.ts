@@ -27,10 +27,29 @@ export type Book = {
 
 }
 
+export type OrderStatus = "placed"| "paid"| "processing"| "outForDelivery"| "delivered";
+
+export type Order = {
+    _id: string;
+    user: User;
+    cartItems: CartItem[];
+    shippingDetails: {
+        name: string;
+        addressLine1: string;
+        city: string;
+        email: string;
+    };
+    totalAmount: number;
+    // status: OrderStatus;
+    createdAt: string;
+}
+
 export type CartItem = {
     book: Book;
-    
+    name: string;
+    seller: string;
     quantity: number;
+    status?: OrderStatus;
 }
 
 export type Cart = {

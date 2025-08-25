@@ -2,9 +2,66 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation, useQuery, useQueryClient} from "react-query";
 //import { useMatch } from "react-router-dom";
 import { toast } from "sonner";
-import { Book } from "@/types";
+import { Book, Order, OrderStatus } from "@/types";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+// type UpdateOrderStatusRequest = {
+//     orderId: string;
+//     status: OrderStatus;
+// }
+
+// export const useUpdateMyOrder = ()=>{
+//     const { getAccessTokenSilently} = useAuth0();
+
+//     const updateMyOrder= async (updateStatusOrderRequest: UpdateOrderStatusRequest)=> {
+//         const accessToken = await getAccessTokenSilently();
+
+//         const response = await fetch(`${API_BASE_URL}/api/my/book/order/status`, {
+//             method: "PATCH",
+//             headers: {
+//                 Authorization: `Bearer ${accessToken}`,
+//                 "Content-Type": "application/json",
+//             },
+//             body: JSON.stringify(updateStatusOrderRequest),
+
+//         })
+
+//         if(!response.ok){
+//             throw new Error("Failed to update status")
+//         }
+//         return response.json();
+
+//     }
+
+//     const { mutateAsync: updateOrderStatus, isLoading, isError,isSuccess, reset } = useMutation(updateMyOrder);
+
+//     if(isSuccess){
+//         toast.success("Order updated")
+//     }
+//     if(isError){
+//         toast.error("Unable to update order");
+//         reset();
+//     }
+//     return { updateOrderStatus, isLoading};
+// }
+
+export const useGetMyPurchases = () => {
+    const { getAccessTokenSilently } = useAuth0();
+  
+    const getPurchasesRequest = async (): Promise<Order[]> => {
+      const accessToken = await getAccessTokenSilently();
+      const response = await fetch(`${API_BASE_URL}/api/my/book/purchases`, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      if (!response.ok) throw new Error("Failed to fetch purchases");
+      return response.json();
+    };
+  
+    const { data: purchases, isLoading } = useQuery("fetchMyPurchases", getPurchasesRequest);
+    return { purchases, isLoading };
+  };
 
 export const useGetMyBookById = (bookId?: string)=>{
     const { getAccessTokenSilently } = useAuth0();
@@ -171,12 +228,34 @@ export const useCreateMyBook = () =>{
     return { createBook, isLoading};
 }
 
+export const useGetMyBookOrders = () =>{
+    const {getAccessTokenSilently} = useAuth0();
+
+    const getMyBookOrdersRequest = async (): Promise<Order[]>=> {
+        const accessToken = await getAccessTokenSilently();
+
+        const response = await fetch(`${API_BASE_URL}/api/my/book/order`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                "Content-Type": "application/json",
+            }
+        })
+        if(!response.ok){
+            throw new Error("Failed to fetch orders");
+        }
+        return response.json();
+    }
+    const {data: orders, isLoading} = useQuery("fetchMyBookOrders", getMyBookOrdersRequest);
+    return {orders, isLoading};
+}
+
 export const useUpdateMyBook = () =>{
     const {getAccessTokenSilently} = useAuth0();
 
      const updateMyBookRequest = async({bookId, bookFormData,}: {bookId: string, bookFormData: FormData;}): Promise<Book> =>{
         const accessToken = await getAccessTokenSilently();
-
+ 
         const response = await fetch(`${API_BASE_URL}/api/my/book/${bookId}`, {
             method: "PUT",
             headers:{
